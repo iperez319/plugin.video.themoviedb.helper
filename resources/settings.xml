@@ -603,6 +603,52 @@
                 </setting>
 
             </group>
+            <group id="2" label="32540">
+                <setting id="watchservice_watchedindicators" type="boolean" label="32541" help="">
+                    <level>0</level>
+                    <default>false</default>
+                    <control type="toggle" />
+                </setting>
+                <setting id="watchservice_baseurl" type="string" label="32542" help="">
+                    <level>0</level>
+                    <default/>
+                    <constraints><allowempty>true</allowempty></constraints>
+                    <dependencies>
+                        <dependency type="enable">
+                            <condition operator="is" setting="watchservice_watchedindicators">true</condition>
+                        </dependency>
+                    </dependencies>
+                    <control type="edit" format="string">
+                        <heading>32542</heading>
+                    </control>
+                </setting>
+                <setting id="watchservice_apikey" type="string" label="32543" help="">
+                    <level>0</level>
+                    <default/>
+                    <constraints><allowempty>true</allowempty></constraints>
+                    <dependencies>
+                        <dependency type="enable">
+                            <condition operator="is" setting="watchservice_watchedindicators">true</condition>
+                        </dependency>
+                    </dependencies>
+                    <control type="edit" format="string">
+                        <heading>32543</heading>
+                    </control>
+                </setting>
+                <setting id="watchservice_userid" type="string" label="32544" help="">
+                    <level>0</level>
+                    <default/>
+                    <constraints><allowempty>true</allowempty></constraints>
+                    <dependencies>
+                        <dependency type="enable">
+                            <condition operator="is" setting="watchservice_watchedindicators">true</condition>
+                        </dependency>
+                    </dependencies>
+                    <control type="edit" format="string">
+                        <heading>32544</heading>
+                    </control>
+                </setting>
+            </group>
         </category>
         <category id="players" label="32014" help="">
             <group id="1" label="32033">
