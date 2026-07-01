@@ -1,0 +1,18 @@
+{
+    "name": "MyVideo",
+    "plugin": "plugin.video.myvideo",
+    "priority": 1,
+    "is_resolvable": "true",
+    "assert": {
+        "play_movie": [
+            "tmdb"
+        ],
+        "play_episode": [
+            "tmdb",
+            "season",
+            "episode"
+        ]
+    },
+    "play_episode": "plugin://plugin.video.myvideo/?mode=play&kind=episode&tmdb_id={tmdb}&season={season}&episode={episode}",
+    "play_movie": "plugin://plugin.video.myvideo/?mode=play&kind=movie&tmdb_id={tmdb}"
+}
