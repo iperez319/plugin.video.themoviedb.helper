@@ -96,6 +96,12 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
             pauseplayprogress=get_setting('trakt_watchedindicators'))
 
     @cached_property
+    def watchservice_playdata(self):
+        from tmdbhelper.lib.items.watchservice import WatchServicePlayData
+        return WatchServicePlayData(
+            watchedindicators=get_setting('watchservice_watchedindicators'))
+
+    @cached_property
     def pagination(self):
         if not boolean(self.params.get('nextpage', True)):
             return False
@@ -287,6 +293,7 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
 
             with TimerList(self.timer_lists, '--sync', log_threshold=0.001, logging=self.log_timers):
                 self.trakt_playdata.pre_sync_join()
+                self.watchservice_playdata.sync_items(items)
 
             with TimerList(self.timer_lists, 'add_items', logging=self.log_timers):
                 items = self.build_items(items)
