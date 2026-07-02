@@ -51,6 +51,14 @@ class CommonContainerAPIs():
         return OMDb()
 
     @cached_property
+    def watchservice_api(self):
+        from tmdbhelper.lib.api.watchservice.api import WatchServiceAPI
+        api = WatchServiceAPI()
+        if not api.is_authorized:
+            return
+        return api
+
+    @cached_property
     def query_database(self):
         from tmdbhelper.lib.query.database.database import FindQueriesDatabase
         return FindQueriesDatabase()

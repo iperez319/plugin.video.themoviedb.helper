@@ -180,6 +180,12 @@ ROUTE_NOID = {
     'trakt_nextepisodes': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.trakt.lists_sync',
         'import_attr': 'ListNextEpisodes'}},
+    'watchservice_nextup': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.watchservice.lists_sync',
+        'import_attr': 'ListWatchServiceNextUp'}},
+    'watchservice_continuewatching': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.watchservice.lists_sync',
+        'import_attr': 'ListWatchServiceContinueWatching'}},
     'trakt_searchlists': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.trakt.lists_static',
         'import_attr': 'ListTraktStaticSearch'}},

@@ -2946,3 +2946,13 @@ msgstr ""
 msgctxt "#32544"
 msgid "Watch Service user ID"
 msgstr ""
+
+#: /resources/tmdbhelper/lib/items/directories/watchservice/lists_sync.py
+msgctxt "#32545"
+msgid "Next Up"
+msgstr ""
+
+#: /resources/tmdbhelper/lib/items/directories/watchservice/lists_sync.py
+msgctxt "#32546"
+msgid "Continue Watching"
+msgstr ""

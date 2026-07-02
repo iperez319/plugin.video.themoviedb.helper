@@ -47,6 +47,31 @@ class WatchServiceAPI(NoCacheRequestAPI):
         except ValueError:
             return
 
+    def _get_json(self, *args):
+        request = self.get_api_request(self.get_request_url(*args), headers=self.headers)
+        if not request:
+            return
+        try:
+            return request.json()
+        except ValueError:
+            return
+
+    def _get_data(self, *args):
+        if not self.is_authorized:
+            return
+        response = self._get_json(*args)
+        if not response or not response.get('success'):
+            return
+        return response.get('data')
+
+    def get_next_up(self):
+        """ GET the next unwatched episode for each followed in-progress show or None """
+        return self._get_data('users', self.user_id, 'next-up')
+
+    def get_continue_watching(self):
+        """ GET partially watched episodes/movies newest-first or None """
+        return self._get_data('users', self.user_id, 'continue-watching')
+
     def get_watched_batch(self, show_ids, movie_ids):
         """ POST the current directory's TMDb ids and return the batch watched/resume
         state (the `data` object) or None on any failure. """
