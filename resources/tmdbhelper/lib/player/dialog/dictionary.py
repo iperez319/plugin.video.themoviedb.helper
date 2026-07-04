@@ -155,10 +155,12 @@ class PlayerDictionaryDictMovie(PlayerDictionaryDict):
 class PlayerDictionaryDictEpisode(PlayerDictionaryDict):
     tmdb_type = 'tv'
 
-    def __init__(self, tmdb_id, details, season=None, episode=None, **kwargs):
+    def __init__(self, tmdb_id, details, season=None, episode=None, display_season=None, display_episode=None, **kwargs):
         super().__init__(tmdb_id, details)
         self.season = season
         self.episode = episode
+        self.display_season = display_season if display_season is not None else season
+        self.display_episode = display_episode if display_episode is not None else episode
 
     def get_routes(self):
         routes = super().get_routes()
@@ -177,6 +179,8 @@ class PlayerDictionaryDictEpisode(PlayerDictionaryDict):
             'originaltitle': lambda **kwargs: self.details.infoproperties.get('tvshow.originaltitle'),
             'season': lambda **kwargs: self.season,
             'episode': lambda **kwargs: self.episode,
+            'display_season': lambda **kwargs: self.display_season,
+            'display_episode': lambda **kwargs: self.display_episode,
             'showpremiered': lambda **kwargs: self.details.infoproperties.get('tvshow.premiered'),
             'showyear': lambda **kwargs: self.details.infoproperties.get('tvshow.year'),
             'showname': self.get_tvshowtitle,
@@ -201,12 +205,12 @@ class PlayerDictionaryDictEpisode(PlayerDictionaryDict):
         return name
 
 
-def PlayerDictionary(tmdb_type, tmdb_id, season=None, episode=None, details=None):
+def PlayerDictionary(tmdb_type, tmdb_id, season=None, episode=None, display_season=None, display_episode=None, details=None):
     itemdict = (
         PlayerDictionaryDictMovie
         if tmdb_type != 'tv' or season is None or episode is None else
         PlayerDictionaryDictEpisode
     )
-    itemdict = itemdict(tmdb_id, details, season=season, episode=episode)
+    itemdict = itemdict(tmdb_id, details, season=season, episode=episode, display_season=display_season, display_episode=display_episode)
     itemdict.initialise_standard_keys()
     return itemdict

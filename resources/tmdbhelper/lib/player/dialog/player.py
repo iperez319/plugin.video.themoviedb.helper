@@ -254,13 +254,21 @@ class Player:
             return
 
     @cached_property
+    def display_season_episode(self):
+        """ (season, episode) remapped via the show's episode group, else canonical """
+        return (self.season, self.episode)
+
+    @cached_property
     def dictionary(self):
         from tmdbhelper.lib.player.dialog.dictionary import PlayerDictionary
+        display_season, display_episode = self.display_season_episode
         return PlayerDictionary(
             tmdb_type=self.tmdb_type,
             tmdb_id=self.tmdb_id,
             season=self.season,
             episode=self.episode,
+            display_season=display_season,
+            display_episode=display_episode,
             details=self.details
         )
 
@@ -335,6 +343,13 @@ class PlayerEpisode(Player):
         self.season = season
         self.episode = episode
         super().__init__(**kwargs)
+
+    @cached_property
+    def display_season_episode(self):
+        if self.season is None or self.episode is None:
+            return (self.season, self.episode)
+        from tmdbhelper.lib.api.episodegroups.api import get_display_numbers
+        return get_display_numbers(self.tmdb_id, self.season, self.episode) or (self.season, self.episode)
 
 
 def Player(tmdb_type, **kwargs):

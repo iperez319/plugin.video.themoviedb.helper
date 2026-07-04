@@ -13,6 +13,6 @@
             "episode"
         ]
     },
-    "play_episode": "plugin://plugin.video.myvideo/?mode=play&kind=episode&tmdb_id={tmdb}&season={season}&episode={episode}",
+    "play_episode": "plugin://plugin.video.myvideo/?mode=play&kind=episode&tmdb_id={tmdb}&season={season}&episode={episode}&display_season={display_season}&display_episode={display_episode}",
     "play_movie": "plugin://plugin.video.myvideo/?mode=play&kind=movie&tmdb_id={tmdb}"
 }

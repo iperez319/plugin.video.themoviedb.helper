@@ -659,6 +659,39 @@
                     </control>
                 </setting>
             </group>
+            <group id="3" label="32549">
+                <setting id="episodegroups_enable" type="boolean" label="32550" help="">
+                    <level>0</level>
+                    <default>false</default>
+                    <control type="toggle" />
+                </setting>
+                <setting id="episodegroups_baseurl" type="string" label="32551" help="">
+                    <level>0</level>
+                    <default/>
+                    <constraints><allowempty>true</allowempty></constraints>
+                    <dependencies>
+                        <dependency type="enable">
+                            <condition operator="is" setting="episodegroups_enable">true</condition>
+                        </dependency>
+                    </dependencies>
+                    <control type="edit" format="string">
+                        <heading>32551</heading>
+                    </control>
+                </setting>
+                <setting id="episodegroups_apikey" type="string" label="32552" help="">
+                    <level>0</level>
+                    <default/>
+                    <constraints><allowempty>true</allowempty></constraints>
+                    <dependencies>
+                        <dependency type="enable">
+                            <condition operator="is" setting="episodegroups_enable">true</condition>
+                        </dependency>
+                    </dependencies>
+                    <control type="edit" format="string">
+                        <heading>32552</heading>
+                    </control>
+                </setting>
+            </group>
         </category>
         <category id="players" label="32014" help="">
             <group id="1" label="32033">
