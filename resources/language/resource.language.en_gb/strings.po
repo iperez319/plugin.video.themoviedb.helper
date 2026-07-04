@@ -2956,3 +2956,13 @@ msgstr ""
 msgctxt "#32546"
 msgid "Continue Watching"
 msgstr ""
+
+#: /resources/settings.xml
+msgctxt "#32547"
+msgid "Fetch watched status in all lists"
+msgstr ""
+
+#: /resources/settings.xml
+msgctxt "#32548"
+msgid "When disabled, watched status is only fetched when viewing a single show, season or movie. Avoids a blocking request when rendering wide lists such as home widgets."
+msgstr ""

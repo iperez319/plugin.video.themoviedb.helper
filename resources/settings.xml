@@ -609,6 +609,16 @@
                     <default>false</default>
                     <control type="toggle" />
                 </setting>
+                <setting id="watchservice_syncallitems" type="boolean" label="32547" help="32548">
+                    <level>0</level>
+                    <default>false</default>
+                    <dependencies>
+                        <dependency type="enable">
+                            <condition operator="is" setting="watchservice_watchedindicators">true</condition>
+                        </dependency>
+                    </dependencies>
+                    <control type="toggle" />
+                </setting>
                 <setting id="watchservice_baseurl" type="string" label="32542" help="">
                     <level>0</level>
                     <default/>

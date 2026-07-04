@@ -104,6 +104,7 @@ class ListWatchServiceContinueWatchingProperties(ListWatchServiceProperties):
 class ListWatchServiceSync(ListDefault):
 
     list_properties_class = ListWatchServiceProperties
+    watchservice_sync_forced = True  # Continue Watching resume bars need the staged progress
 
     def configure_list_properties(self, list_properties):
         list_properties.limit = 20 * max(get_setting('pagemulti_sync', 'int'), 1)

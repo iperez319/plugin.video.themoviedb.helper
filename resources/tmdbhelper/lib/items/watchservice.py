@@ -31,8 +31,9 @@ class WatchServicePlayData():
     truth; these rows are a per-build read-through cache.
     """
 
-    def __init__(self, watchedindicators=False):
+    def __init__(self, watchedindicators=False, syncallitems=False):
         self._watchedindicators = watchedindicators
+        self._syncallitems = syncallitems
 
     @property
     def is_enabled(self):
@@ -95,14 +96,18 @@ class WatchServicePlayData():
         return
 
     @is_sync
-    def sync_items(self, items):
+    def sync_items(self, items, forced=False):
         refs = [r for r in (self._item_ref(i) for i in (items or [])) if r]
         if not refs:
             return
-
         show_ids = {r[1] for r in refs if r[1] is not None}
         movie_ids = {r[2] for r in refs if r[2] is not None}
 
+        # On-demand mode: only fetch for single-title builds (detail view or one
+        # show's seasons/episodes) unless the directory forces a sync.
+        if not self._syncallitems and not forced and len(show_ids) + len(movie_ids) > 1:
+            return
+        
         data = self.api.get_watched_batch(show_ids, movie_ids)
         if not data:
             return
