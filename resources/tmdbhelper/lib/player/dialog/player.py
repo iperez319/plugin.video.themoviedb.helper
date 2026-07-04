@@ -23,6 +23,8 @@ class Player:
         self.player_file = player  # the player file name
         self.player_mode = mode  # search or play
         self.handle = handle  # Handle from plugin callback hook
+        self.resume_seconds = kwargs.get('resume_seconds')  # client-supplied resume position (seconds)
+        self.total_seconds = kwargs.get('total_seconds')  # client-supplied full runtime (seconds)
 
     @property
     def player_mode(self):
@@ -72,7 +74,31 @@ class Player:
     def details(self):
         with self.p_dialog as p_dialog:
             p_dialog.update(f'{get_localized(32375)}...')
-            return self.player_details.details
+            details = self.player_details.details
+            self.apply_resume_override(details)
+            return details
+
+    @staticmethod
+    def _int_or_none(value):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return None
+
+    def apply_resume_override(self, details):
+        """ Stamp a client-supplied resume point (in seconds) onto the resolved
+        listitem's infoproperties. No-op unless resume_seconds was passed in the
+        play paramstring. """
+        if not details:
+            return
+        resume = self._int_or_none(self.resume_seconds)
+        if not resume or resume < 0:
+            return
+        total = (self._int_or_none(self.total_seconds)
+                 or self._int_or_none(details.infoproperties.get('TotalTime'))
+                 or 0)
+        details.infoproperties['ResumeTime'] = resume
+        details.infoproperties['TotalTime'] = total
 
     """
     ProgressDialog: Step 03: Recache Kodi Library DB
