@@ -1,0 +1,18 @@
+{
+    "name": "Watch Service Bridge",
+    "plugin": "plugin.video.watchservice",
+    "priority": 1,
+    "is_resolvable": "true",
+    "assert": {
+        "play_movie": [
+            "tmdb"
+        ],
+        "play_episode": [
+            "tmdb",
+            "season",
+            "episode"
+        ]
+    },
+    "play_episode": "plugin://plugin.video.watchservice/?info=play&kind=episode&tmdb_id={tmdb}&season={season}&episode={episode}&display_season={display_season}&display_episode={display_episode}",
+    "play_movie": "plugin://plugin.video.watchservice/?info=play&kind=movie&tmdb_id={tmdb}"
+}
