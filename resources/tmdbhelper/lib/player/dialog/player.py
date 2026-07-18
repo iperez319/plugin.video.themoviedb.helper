@@ -23,6 +23,10 @@ class Player:
         self.player_file = player  # the player file name
         self.player_mode = mode  # search or play
         self.handle = handle  # Handle from plugin callback hook
+        self.resume_seconds = kwargs.get('resume_seconds')  # client-supplied resume position (seconds)
+        self.total_seconds = kwargs.get('total_seconds')  # client-supplied full runtime (seconds)
+        self.selection_id = kwargs.get('selection_id')  # launch-scoped manual stream selection
+        self.playback_intent_id = kwargs.get('playback_intent_id')  # foreground iOS launch correlation
 
     @property
     def player_mode(self):
@@ -72,7 +76,31 @@ class Player:
     def details(self):
         with self.p_dialog as p_dialog:
             p_dialog.update(f'{get_localized(32375)}...')
-            return self.player_details.details
+            details = self.player_details.details
+            self.apply_resume_override(details)
+            return details
+
+    @staticmethod
+    def _int_or_none(value):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return None
+
+    def apply_resume_override(self, details):
+        """ Stamp a client-supplied resume point (in seconds) onto the resolved
+        listitem's infoproperties. No-op unless resume_seconds was passed in the
+        play paramstring. """
+        if not details:
+            return
+        resume = self._int_or_none(self.resume_seconds)
+        if not resume or resume < 0:
+            return
+        total = (self._int_or_none(self.total_seconds)
+                 or self._int_or_none(details.infoproperties.get('TotalTime'))
+                 or 0)
+        details.infoproperties['ResumeTime'] = resume
+        details.infoproperties['TotalTime'] = total
 
     """
     ProgressDialog: Step 03: Recache Kodi Library DB
@@ -228,13 +256,23 @@ class Player:
             return
 
     @cached_property
+    def display_season_episode(self):
+        """ (season, episode) remapped via the show's episode group, else canonical """
+        return (self.season, self.episode)
+
+    @cached_property
     def dictionary(self):
         from tmdbhelper.lib.player.dialog.dictionary import PlayerDictionary
+        display_season, display_episode = self.display_season_episode
         return PlayerDictionary(
             tmdb_type=self.tmdb_type,
             tmdb_id=self.tmdb_id,
             season=self.season,
             episode=self.episode,
+            display_season=display_season,
+            display_episode=display_episode,
+            selection_id=self.selection_id,
+            playback_intent_id=self.playback_intent_id,
             details=self.details
         )
 
@@ -309,6 +347,13 @@ class PlayerEpisode(Player):
         self.season = season
         self.episode = episode
         super().__init__(**kwargs)
+
+    @cached_property
+    def display_season_episode(self):
+        if self.season is None or self.episode is None:
+            return (self.season, self.episode)
+        from tmdbhelper.lib.api.episodegroups.api import get_display_numbers
+        return get_display_numbers(self.tmdb_id, self.season, self.episode) or (self.season, self.episode)
 
 
 def Player(tmdb_type, **kwargs):

@@ -16,6 +16,7 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
     sort_by_dbid = False
     kodi_db = None
     thumb_override = 0
+    watchservice_sync_forced = False  # True to sync watch-service state even in on-demand mode
 
     def __init__(self, handle, paramstring, **kwargs):
         # plugin:// params configuration
@@ -94,6 +95,13 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
         return TraktPlayData(
             watchedindicators=get_setting('trakt_watchedindicators'),
             pauseplayprogress=get_setting('trakt_watchedindicators'))
+
+    @cached_property
+    def watchservice_playdata(self):
+        from tmdbhelper.lib.items.watchservice import WatchServicePlayData
+        return WatchServicePlayData(
+            watchedindicators=get_setting('watchservice_watchedindicators'),
+            syncallitems=get_setting('watchservice_syncallitems'))
 
     @cached_property
     def pagination(self):
@@ -287,6 +295,7 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
 
             with TimerList(self.timer_lists, '--sync', log_threshold=0.001, logging=self.log_timers):
                 self.trakt_playdata.pre_sync_join()
+                self.watchservice_playdata.sync_items(items, forced=self.watchservice_sync_forced)
 
             with TimerList(self.timer_lists, 'add_items', logging=self.log_timers):
                 items = self.build_items(items)
