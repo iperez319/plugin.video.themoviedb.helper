@@ -28,6 +28,8 @@ class PlayerDictionaryDict(dict):
     def __init__(self, tmdb_id, details, **kwargs):
         self.tmdb_id = tmdb_id
         self.details = details
+        self.selection_id = kwargs.get('selection_id')
+        self.playback_intent_id = kwargs.get('playback_intent_id')
 
     def __missing__(self, key):
 
@@ -96,6 +98,8 @@ class PlayerDictionaryDict(dict):
             'poster': lambda **kwargs: self.details.art.get('poster'),
             'fanart': lambda **kwargs: self.details.art.get('fanart'),
             'now': self.get_now,
+            'selection_id': lambda **kwargs: self.selection_id or '',
+            'playback_intent_id': lambda **kwargs: self.playback_intent_id or '',
         }
 
     def get_month(self, **kwargs):
@@ -156,7 +160,7 @@ class PlayerDictionaryDictEpisode(PlayerDictionaryDict):
     tmdb_type = 'tv'
 
     def __init__(self, tmdb_id, details, season=None, episode=None, display_season=None, display_episode=None, **kwargs):
-        super().__init__(tmdb_id, details)
+        super().__init__(tmdb_id, details, **kwargs)
         self.season = season
         self.episode = episode
         self.display_season = display_season if display_season is not None else season
@@ -205,12 +209,24 @@ class PlayerDictionaryDictEpisode(PlayerDictionaryDict):
         return name
 
 
-def PlayerDictionary(tmdb_type, tmdb_id, season=None, episode=None, display_season=None, display_episode=None, details=None):
+def PlayerDictionary(
+        tmdb_type, tmdb_id, season=None, episode=None,
+        display_season=None, display_episode=None,
+        selection_id=None, playback_intent_id=None, details=None):
     itemdict = (
         PlayerDictionaryDictMovie
         if tmdb_type != 'tv' or season is None or episode is None else
         PlayerDictionaryDictEpisode
     )
-    itemdict = itemdict(tmdb_id, details, season=season, episode=episode, display_season=display_season, display_episode=display_episode)
+    itemdict = itemdict(
+        tmdb_id,
+        details,
+        season=season,
+        episode=episode,
+        display_season=display_season,
+        display_episode=display_episode,
+        selection_id=selection_id,
+        playback_intent_id=playback_intent_id,
+    )
     itemdict.initialise_standard_keys()
     return itemdict

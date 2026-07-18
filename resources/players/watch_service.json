@@ -13,6 +13,6 @@
             "episode"
         ]
     },
-    "play_episode": "plugin://plugin.video.watchservice/?info=play&kind=episode&tmdb_id={tmdb}&season={season}&episode={episode}&display_season={display_season}&display_episode={display_episode}",
-    "play_movie": "plugin://plugin.video.watchservice/?info=play&kind=movie&tmdb_id={tmdb}"
+    "play_episode": "plugin://plugin.video.watchservice/?info=play&kind=episode&tmdb_id={tmdb}&season={season}&episode={episode}&display_season={display_season}&display_episode={display_episode}&selection_id={selection_id_url}&playback_intent_id={playback_intent_id_url}",
+    "play_movie": "plugin://plugin.video.watchservice/?info=play&kind=movie&tmdb_id={tmdb}&selection_id={selection_id_url}&playback_intent_id={playback_intent_id_url}"
 }

@@ -1,0 +1,3 @@
+- Base upstream: jurialmunkey/plugin.video.themoviedb.helper 6.15.8
+- Fork changes: forward launch-scoped stream selection ids through the Watch Service player.
+- Fork changes: forward origin-aware playback-intent ids through URL-safe player dictionary expansion.

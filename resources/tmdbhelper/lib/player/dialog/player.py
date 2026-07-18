@@ -25,6 +25,8 @@ class Player:
         self.handle = handle  # Handle from plugin callback hook
         self.resume_seconds = kwargs.get('resume_seconds')  # client-supplied resume position (seconds)
         self.total_seconds = kwargs.get('total_seconds')  # client-supplied full runtime (seconds)
+        self.selection_id = kwargs.get('selection_id')  # launch-scoped manual stream selection
+        self.playback_intent_id = kwargs.get('playback_intent_id')  # foreground iOS launch correlation
 
     @property
     def player_mode(self):
@@ -269,6 +271,8 @@ class Player:
             episode=self.episode,
             display_season=display_season,
             display_episode=display_episode,
+            selection_id=self.selection_id,
+            playback_intent_id=self.playback_intent_id,
             details=self.details
         )
 
