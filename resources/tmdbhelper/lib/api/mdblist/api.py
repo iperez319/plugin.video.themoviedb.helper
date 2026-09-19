@@ -7,13 +7,15 @@ class MDbListRatingMappingObject:
     rating_keys = {
         'tomatoes': 'rottentomatoes_rating',
         'tomatoesaudience': 'rottentomatoes_usermeter',
-        'popcorn': 'rottentomatoes_usermeter'}
+        'popcorn': 'rottentomatoes_usermeter',
+        'metacritic': 'metacritic_rating'}
 
     rating_func = {
         'imdb': lambda v: int(v * 10),  # Convert out of /10 to 100%
         'metacriticuser': lambda v: int(v * 10),  # Convert out of /10 to 100%
         'letterboxd': lambda v: int(v * 20),  # Convert 5 stars to 100%
         'rogerebert': lambda v: int(v * 25),  # Convert 4 stars to 100%
+        'myanimelist': lambda v: int(v * 10),  # Convert out of /10 to 100%
     }
 
     def __init__(self, meta):
@@ -66,6 +68,41 @@ class MDbListRatingMappingObject:
         return self.ratings.items()
 
 
+class MDbListKeywordRatingMappingObject(MDbListRatingMappingObject):
+    votes_key = None
+    votes_value = None
+
+    rating_keywords = {
+        'certified-fresh': ('rottentomatoes_image', 'certified'),
+        'fresh': ('rottentomatoes_image', 'fresh'),
+        'rotten': ('rottentomatoes_image', 'rotten'),
+        'certified-hot': ('rottentomatoes_usermeter_image', 'hot'),
+        'metacritic-must-see': ('metacritic_image', 'mustsee'),
+        'roger-ebert-thumbs-down': ('rogerebert_image', 'thumbsdown'),
+    }
+
+    @cached_property
+    def name(self):
+        try:
+            return self.meta['name']
+        except KeyError:
+            return
+
+    @cached_property
+    def rating_key(self):
+        try:
+            return self.rating_keywords[self.name][0]
+        except KeyError:
+            return
+
+    @cached_property
+    def rating_value(self):
+        try:
+            return self.rating_keywords[self.name][1]
+        except KeyError:
+            return
+
+
 class MDbListRatingMapping:
     def __init__(self, meta):
         self.meta = meta
@@ -78,6 +115,13 @@ class MDbListRatingMapping:
             return []
 
     @cached_property
+    def meta_keywords(self):
+        try:
+            return self.meta['keywords']
+        except (KeyError, TypeError):
+            return []
+
+    @cached_property
     def ratings(self):
         ratings = {
             k: v
@@ -85,6 +129,13 @@ class MDbListRatingMapping:
             for k, v in MDbListRatingMappingObject(i).items()
         }
         ratings['mdblist_rating'] = self.meta.get('score')
+
+        ratings.update({
+            k: v
+            for d in self.meta_keywords
+            for k, v in MDbListKeywordRatingMappingObject(d).items()
+        })
+
         return ratings
 
 
@@ -106,8 +157,8 @@ class MDbList(RequestAPI):
         path = self.get_request_url('lists', list_id, 'items', action)
         return self.get_api_request(path, postdata=item, method='json')
 
-    def get_details(self, media_type, media_id, media_provider='tmdb'):
-        return self.get_request_sc(media_provider, media_type, media_id)  # TODO: Add append_to_response=review ?
+    def get_details(self, media_type, media_id, media_provider='tmdb', append_to_response='keyword'):
+        return self.get_request_sc(media_provider, media_type, media_id, append_to_response=append_to_response)  # TODO: Add append_to_response=review ?
 
     def get_ratings(self, media_type, media_id, media_provider='tmdb'):
         response = self.get_details(media_type, media_id, media_provider=media_provider)
@@ -116,3 +167,18 @@ class MDbList(RequestAPI):
 
     def get_response(self, *args, **kwargs):
         return self.get_api_request(self.get_request_url(*args, **kwargs), headers=self.headers)
+
+    def get_response_json(self, *args, **kwargs):
+        try:
+            return self.get_response(*args, **kwargs).json()
+        except ValueError:
+            return {}
+        except AttributeError:
+            return {}
+
+
+def MDbListAPI():
+    from tmdbhelper.lib.addon.plugin import get_setting
+    if get_setting('mdblist_apikey', 'str'):
+        return MDbList()
+    return
