@@ -20,10 +20,17 @@ tmdbhelper_lib = types.ModuleType("tmdbhelper.lib")
 tmdbhelper_addon = types.ModuleType("tmdbhelper.lib.addon")
 tmdate = types.ModuleType("tmdbhelper.lib.addon.tmdate")
 tmdate.get_datetime_now = datetime.now
+addon_plugin = types.ModuleType("tmdbhelper.lib.addon.plugin")
+addon_plugin.get_localized = lambda value: str(value)
+addon_plugin.get_setting = lambda *_args: None
+addon_logger = types.ModuleType("tmdbhelper.lib.addon.logger")
+addon_logger.kodi_log = lambda *_args, **_kwargs: None
 sys.modules.setdefault("tmdbhelper", tmdbhelper)
 sys.modules.setdefault("tmdbhelper.lib", tmdbhelper_lib)
 sys.modules.setdefault("tmdbhelper.lib.addon", tmdbhelper_addon)
 sys.modules.setdefault("tmdbhelper.lib.addon.tmdate", tmdate)
+sys.modules.setdefault("tmdbhelper.lib.addon.plugin", addon_plugin)
+sys.modules.setdefault("tmdbhelper.lib.addon.logger", addon_logger)
 
 MODULE_PATH = (
     pathlib.Path(__file__).parents[1]
@@ -32,6 +39,14 @@ MODULE_PATH = (
 spec = importlib.util.spec_from_file_location("tmdbhelper_player_dictionary", MODULE_PATH)
 dictionary = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(dictionary)
+
+PLAYER_MODULE_PATH = (
+    pathlib.Path(__file__).parents[1]
+    / "resources/tmdbhelper/lib/player/dialog/player.py"
+)
+player_spec = importlib.util.spec_from_file_location("tmdbhelper_player_dialog", PLAYER_MODULE_PATH)
+player_module = importlib.util.module_from_spec(player_spec)
+player_spec.loader.exec_module(player_module)
 
 
 class Details:
@@ -49,6 +64,20 @@ class Details:
 
 
 class PlaybackIntentDictionaryTests(unittest.TestCase):
+    def test_explicit_movie_resume_overrides_resolved_listitem_progress(self):
+        player = player_module.PlayerMovie(
+            tmdb_id=100,
+            resume_seconds="1800",
+        )
+        details = types.SimpleNamespace(
+            infoproperties={"ResumeTime": 600, "TotalTime": 7200}
+        )
+
+        player.apply_resume_override(details)
+
+        self.assertEqual(details.infoproperties["ResumeTime"], 1800)
+        self.assertEqual(details.infoproperties["TotalTime"], 7200)
+
     def test_movie_template_expands_playback_intent(self):
         item = dictionary.PlayerDictionary(
             "movie", 100, details=Details(),
