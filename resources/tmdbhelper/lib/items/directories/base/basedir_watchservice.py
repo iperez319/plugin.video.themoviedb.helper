@@ -14,21 +14,21 @@ class BaseDirItemWatchServiceAuthorised(BaseDirItem):
 class BaseDirItemWatchServiceNextUp(BaseDirItemWatchServiceAuthorised):
     priority = 100
     label_type = 'localize'
-    label_localized = 32545
+    label_localized = 32945
     types = ('tv', )
     params = {'info': 'watchservice_nextup'}
     art_icon = 'resources/icons/trakt/inprogress.png'
-    group = 32540
+    group = 32940
 
 
 class BaseDirItemWatchServiceContinueWatching(BaseDirItemWatchServiceAuthorised):
     priority = 110
     label_type = 'localize'
-    label_localized = 32546
+    label_localized = 32946
     types = ('tv', 'movie', )
     params = {'info': 'watchservice_continuewatching'}
     art_icon = 'resources/icons/trakt/inprogress.png'
-    group = 32540
+    group = 32940
 
 
 def get_all_watchservice_class_instances():

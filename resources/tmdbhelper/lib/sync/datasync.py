@@ -156,6 +156,12 @@ class SyncDataGetterAllUnHiddenEpisodesUpNext(SyncDataGetterDroppedWatchedUnHidd
     clause_keys = ('upnext_episode_id', )
 
 
+class SyncDataGetterAllEpisodePlaycounts(SyncDataGetterAll):
+    query_values = ('episode', )
+    clause_keys = ('plays', )
+    base_keys = ('id', )
+
+
 class SyncDataGetterAllItems(SyncDataGetterAll):
     @property
     def query_values(self):
@@ -214,6 +220,51 @@ class SyncDataGetterAllItemsWatched(SyncDataGetterAllItems):
     clause_keys = ('last_watched_at', )
 
 
+class SyncDataGetterWatchedHistoryStats(SyncDataGetterAllItemsWatched):
+    days = 30
+    query_clauses = (
+        'item_type=?',
+        "DATE(last_watched_at, 'localtime') >= DATE('now', 'localtime', ?)",
+        "DATE(last_watched_at, 'localtime') <= DATE('now', 'localtime')",
+    )
+
+    @property
+    def query_values(self):
+        return (self.item_type, f'-{self.days - 1} days', )
+
+    def get_keys(self):
+        return (
+            "DATE(last_watched_at, 'localtime') AS watched_date",
+            'COUNT(*) AS watched_count',
+        )
+
+    def get_clause(self):
+        return f'{super().get_clause()} GROUP BY watched_date ORDER BY watched_date DESC'
+
+    def get_items(self):
+        self.instance_syncdata.sync(self.item_type, self.clause_keys)
+        return self.instance_syncdata.cache.get_list_values(keys=self.keys, values=self.query_values, conditions=self.clause)
+
+
+class SyncDataGetterWatchedMonthlyHistoryStats(SyncDataGetterWatchedHistoryStats):
+    months = 12
+    query_clauses = (
+        'item_type=?',
+        "DATE(last_watched_at, 'localtime') >= DATE('now', 'localtime', 'start of month', ?)",
+        "DATE(last_watched_at, 'localtime') <= DATE('now', 'localtime')",
+    )
+
+    @property
+    def query_values(self):
+        return (self.item_type, f'-{self.months - 1} months', )
+
+    def get_keys(self):
+        return (
+            "DATE(last_watched_at, 'localtime', 'start of month') AS watched_date",
+            'COUNT(*) AS watched_count',
+        )
+
+
 class SyncDataGetterAllItemsPlayback(SyncDataGetterAllItems):
     clause_keys = ('playback_progress', )
 
@@ -258,6 +309,9 @@ class SyncDataGetters:
     def get_all_unhidden_episodes_upnext_getter(self):
         return SyncDataGetterAllUnHiddenEpisodesUpNext(self)
 
+    def get_all_episode_playcounts_getter(self):
+        return SyncDataGetterAllEpisodePlaycounts(self)
+
     def get_all_unhidden_shows_inprogress_getter(self):
         return SyncDataGetterAllUnHiddenShowsInProgress(self)
 
@@ -286,6 +340,16 @@ class SyncDataGetters:
 
     def get_all_watched_getter(self, item_type):
         return self.get_item_type_getter(SyncDataGetterAllItemsWatched, item_type)
+
+    def get_watched_history_stats_getter(self, item_type, days):
+        sd = self.get_item_type_getter(SyncDataGetterWatchedHistoryStats, item_type)
+        sd.days = days
+        return sd
+
+    def get_watched_monthly_history_stats_getter(self, item_type, months):
+        sd = self.get_item_type_getter(SyncDataGetterWatchedMonthlyHistoryStats, item_type)
+        sd.months = months
+        return sd
 
     def get_all_playback_getter(self, item_type):
         return self.get_item_type_getter(SyncDataGetterAllItemsPlayback, item_type)
@@ -369,12 +433,12 @@ class SyncData(SyncDataGetters):
         return name
 
     @has_arg_value(0, ('tv', 'movie', ))
-    def get_values(self, tmdb_type, tmdb_id, season=None, episode=None, keys=None):
-        self.sync('show' if tmdb_type == 'tv' else 'movie', keys)
+    def get_values(self, tmdb_type, tmdb_id, season=None, episode=None, keys=None, item_type=None):
+        self.sync(item_type or ('show' if tmdb_type == 'tv' else 'movie'), keys)
         return self.cache.get_values(item_id=self.get_name(tmdb_type, tmdb_id, season, episode), keys=keys)
 
-    def get_value(self, tmdb_type, tmdb_id, season=None, episode=None, key=None):
-        data = self.get_values(tmdb_type, tmdb_id, season, episode, keys=(key,))
+    def get_value(self, tmdb_type, tmdb_id, season=None, episode=None, key=None, item_type=None):
+        data = self.get_values(tmdb_type, tmdb_id, season, episode, keys=(key,), item_type=item_type)
         return data[0] if data else None
 
     def sync(self, item_type, keys, forced=False):

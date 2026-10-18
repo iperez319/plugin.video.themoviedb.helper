@@ -164,6 +164,9 @@ ROUTE_NOID = {
     'trakt_history': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.trakt.lists_sync',
         'import_attr': 'ListHistory'}},
+    'trakt_history_stats': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.trakt.lists_stats',
+        'import_attr': 'ListHistoryStats'}},
     'trakt_mostwatched': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.trakt.lists_sync',
         'import_attr': 'ListMostWatched'}},
@@ -266,12 +269,30 @@ ROUTE_NOID = {
     'mdblist_userlist': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_custom',
         'import_attr': 'ListMDbListCustom'}},
+    'mdblist_officiallist': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_custom',
+        'import_attr': 'ListMDbListOfficial'}},
+    'mdblist_streamingcharts': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_charts',
+        'import_attr': 'ListMDbListStreamingCharts'}},
+    'mdblist_streamingchart': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_charts',
+        'import_attr': 'ListMDbListStreamingChart'}},
     'mdblist_toplists': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_lists',
         'import_attr': 'ListMDbListListsTop'}},
     'mdblist_yourlists': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_lists',
         'import_attr': 'ListMDbListListsUser'}},
+    'mdblist_likedlists': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_lists',
+        'import_attr': 'ListMDbListListsLiked'}},
+    'mdblist_curatedlists': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_lists',
+        'import_attr': 'ListMDbListListsCurated'}},
+    'mdblist_officiallists': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_lists',
+        'import_attr': 'ListMDbListListsOfficial'}},
     'mdblist_searchlists': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.mdblist.lists_lists',
         'import_attr': 'ListMDbListListsSearch'}},
@@ -459,6 +480,15 @@ ROUTE_TMDBID = {
     'seasons': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.tmdb.lists_seasons',
         'import_attr': 'ListSeasons'}},
+    'episode_groups': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.tmdb.lists_episode_groups',
+        'import_attr': 'ListEpisodeGroups'}},
+    'episode_group_seasons': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.tmdb.lists_episode_groups',
+        'import_attr': 'ListEpisodeGroupSeasons'}},
+    'episode_group_season_episodes': {'route': {
+        'module_name': 'tmdbhelper.lib.items.directories.tmdb.lists_episode_groups',
+        'import_attr': 'ListEpisodeGroupEpisodes'}},
     'flatseasons': {'route': {
         'module_name': 'tmdbhelper.lib.items.directories.tmdb.lists_seasons',
         'import_attr': 'ListFlatSeasons'}},

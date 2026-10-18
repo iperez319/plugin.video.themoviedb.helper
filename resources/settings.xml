@@ -158,6 +158,11 @@
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
+                <setting id="seasons_groups" type="boolean" label="32542" help="">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
                 <setting id="seasons_upnext" type="boolean" label="32015" help="">
                     <level>0</level>
                     <default>true</default>
@@ -640,25 +645,14 @@
                     </constraints>
                     <control type="spinner" format="string"/>
                 </setting>
-                <setting id="sync_source_playback" type="string" label="14086" help="32417">
-                    <level>0</level>
-                    <default>Trakt</default>
-                    <constraints>
-                        <options>
-                            <option>Trakt</option>
-                            <option>MDbList</option>
-                        </options>
-                    </constraints>
-                    <control type="spinner" format="string"/>
-                </setting>
             </group>
-            <group id="2" label="32540">
-                <setting id="watchservice_watchedindicators" type="boolean" label="32541" help="">
+            <group id="2" label="32940">
+                <setting id="watchservice_watchedindicators" type="boolean" label="32941" help="">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle" />
                 </setting>
-                <setting id="watchservice_syncallitems" type="boolean" label="32547" help="32548">
+                <setting id="watchservice_syncallitems" type="boolean" label="32947" help="32948">
                     <level>0</level>
                     <default>false</default>
                     <dependencies>
@@ -668,7 +662,7 @@
                     </dependencies>
                     <control type="toggle" />
                 </setting>
-                <setting id="watchservice_baseurl" type="string" label="32542" help="">
+                <setting id="watchservice_baseurl" type="string" label="32942" help="">
                     <level>0</level>
                     <default/>
                     <constraints><allowempty>true</allowempty></constraints>
@@ -678,10 +672,10 @@
                         </dependency>
                     </dependencies>
                     <control type="edit" format="string">
-                        <heading>32542</heading>
+                        <heading>32942</heading>
                     </control>
                 </setting>
-                <setting id="watchservice_apikey" type="string" label="32543" help="">
+                <setting id="watchservice_apikey" type="string" label="32943" help="">
                     <level>0</level>
                     <default/>
                     <constraints><allowempty>true</allowempty></constraints>
@@ -691,10 +685,10 @@
                         </dependency>
                     </dependencies>
                     <control type="edit" format="string">
-                        <heading>32543</heading>
+                        <heading>32943</heading>
                     </control>
                 </setting>
-                <setting id="watchservice_userid" type="string" label="32544" help="">
+                <setting id="watchservice_userid" type="string" label="32944" help="">
                     <level>0</level>
                     <default/>
                     <constraints><allowempty>true</allowempty></constraints>
@@ -704,17 +698,17 @@
                         </dependency>
                     </dependencies>
                     <control type="edit" format="string">
-                        <heading>32544</heading>
+                        <heading>32944</heading>
                     </control>
                 </setting>
             </group>
-            <group id="3" label="32549">
-                <setting id="episodegroups_enable" type="boolean" label="32550" help="">
+            <group id="3" label="32949">
+                <setting id="episodegroups_enable" type="boolean" label="32950" help="">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle" />
                 </setting>
-                <setting id="episodegroups_baseurl" type="string" label="32551" help="">
+                <setting id="episodegroups_baseurl" type="string" label="32951" help="">
                     <level>0</level>
                     <default/>
                     <constraints><allowempty>true</allowempty></constraints>
@@ -724,10 +718,10 @@
                         </dependency>
                     </dependencies>
                     <control type="edit" format="string">
-                        <heading>32551</heading>
+                        <heading>32951</heading>
                     </control>
                 </setting>
-                <setting id="episodegroups_apikey" type="string" label="32552" help="">
+                <setting id="episodegroups_apikey" type="string" label="32952" help="">
                     <level>0</level>
                     <default/>
                     <constraints><allowempty>true</allowempty></constraints>
@@ -737,7 +731,7 @@
                         </dependency>
                     </dependencies>
                     <control type="edit" format="string">
-                        <heading>32552</heading>
+                        <heading>32952</heading>
                     </control>
                 </setting>
             </group>
@@ -915,7 +909,7 @@
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="contextmenu_sync_trakt" type="boolean" label="32295" help="">
+                <setting id="contextmenu_sync_trakt" type="boolean" label="32546" help="">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>

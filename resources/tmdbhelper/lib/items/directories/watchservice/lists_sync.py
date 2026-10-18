@@ -124,7 +124,7 @@ class ListWatchServiceNextUp(ListWatchServiceSync):
 
     def configure_list_properties(self, list_properties):
         list_properties = super().configure_list_properties(list_properties)
-        list_properties.localize = 32545
+        list_properties.localize = 32945
         list_properties.container_content = 'episodes'
         return list_properties
 
@@ -135,7 +135,7 @@ class ListWatchServiceContinueWatching(ListWatchServiceSync):
 
     def configure_list_properties(self, list_properties):
         list_properties = super().configure_list_properties(list_properties)
-        list_properties.localize = 32546
+        list_properties.localize = 32946
         list_properties.container_content = 'videos'
         return list_properties
 

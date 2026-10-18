@@ -835,12 +835,12 @@ msgstr ""
 
 #: /resources/settings.xml
 msgctxt "#32131"
-msgid "Auto-update library from Trakt list(s)"
+msgid "Auto-update library from list(s)"
 msgstr ""
 
 #: /resources/lib/script.py
 msgctxt "#32132"
-msgid "Do you wish to update the library from the Trakt list(s) now?"
+msgid "Do you wish to update the library from the list(s) now?"
 msgstr ""
 
 #: /resources/lib/script.py
@@ -2730,6 +2730,44 @@ msgctxt "#32540"
 msgid "All digital releases"
 msgstr ""
 
+#: /resources/tmdbhelper/lib/items/directories/base/basedir_details.py
+#: /resources/tmdbhelper/lib/items/directories/tmdb/lists_episode_groups.py
+#: /resources/tmdbhelper/lib/items/database/baseview_factories/concrete_classes/groupsseason.py
+msgctxt "#32541"
+msgid "Groups"
+msgstr ""
+
+#: /resources/settings.xml
+msgctxt "#32542"
+msgid "Additional season: Groups"
+msgstr ""
+
+#: /resources/tmdbhelper/lib/items/directories/base/basedir_mdblist.py
+msgctxt "#32543"
+msgid "Curated Lists"
+msgstr ""
+
+#: /resources/tmdbhelper/lib/items/directories/base/basedir_mdblist.py
+msgctxt "#32544"
+msgid "Official Lists"
+msgstr ""
+
+#: /resources/tmdbhelper/lib/items/directories/base/basedir_mdblist.py
+msgctxt "#32545"
+msgid "Streaming Charts"
+msgstr ""
+
+#: /resources/settings.xml
+#: /resources/tmdbhelper/lib/items/context.py
+msgctxt "#32546"
+msgid "Trakt / MDbList options"
+msgstr ""
+
+#: /resources/tmdbhelper/lib/script/discover/trakt.py
+msgctxt "#32547"
+msgid "Subgenres"
+msgstr ""
+
 msgctxt "#30030"
 msgid "Hindi (India)"
 msgstr ""
@@ -2967,66 +3005,66 @@ msgid "Default player for episodes"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32540"
+msgctxt "#32940"
 msgid "Watch Service"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32541"
+msgctxt "#32941"
 msgid "Use Watch Service watched indicators"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32542"
+msgctxt "#32942"
 msgid "Watch Service address (e.g. http://192.168.1.10:3000)"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32543"
+msgctxt "#32943"
 msgid "Watch Service API key"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32544"
+msgctxt "#32944"
 msgid "Watch Service user ID"
 msgstr ""
 
 #: /resources/tmdbhelper/lib/items/directories/watchservice/lists_sync.py
-msgctxt "#32545"
+msgctxt "#32945"
 msgid "Next Up"
 msgstr ""
 
 #: /resources/tmdbhelper/lib/items/directories/watchservice/lists_sync.py
-msgctxt "#32546"
+msgctxt "#32946"
 msgid "Continue Watching"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32547"
+msgctxt "#32947"
 msgid "Fetch watched status in all lists"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32548"
+msgctxt "#32948"
 msgid "When disabled, watched status is only fetched when viewing a single show, season or movie. Avoids a blocking request when rendering wide lists such as home widgets."
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32549"
+msgctxt "#32949"
 msgid "Episode Groups"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32550"
+msgctxt "#32950"
 msgid "Use episode group numbering at playback"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32551"
+msgctxt "#32951"
 msgid "Episode Groups service address (e.g. http://192.168.1.10:3100)"
 msgstr ""
 
 #: /resources/settings.xml
-msgctxt "#32552"
+msgctxt "#32952"
 msgid "Episode Groups service API key"
 msgstr ""
